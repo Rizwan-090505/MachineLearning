@@ -1,0 +1,14 @@
+--- Train-Test Split ---
+Ratio: 80% Train (168 samples), 20% Test (42 samples)
+
+--- Experimenting with k values ---
+Accuracy for k=1: 95.24%
+Accuracy for k=2: 95.24%
+Accuracy for k=3: 95.24%
+Accuracy for k=4: 95.24%
+Accuracy for k=5: 95.24%
+Accuracy for k=6: 95.24%
+Accuracy for k=7: 92.86%
+Accuracy for k=8: 95.24%
+Accuracy for k=9: 92.86%
+Accuracy for k=10: 95.24%

@@ -1,0 +1,23 @@
+# Python virtual environments
+.venv/
+**/.venv/
+
+# Datasets
+dataset/
+**/dataset/
+
+# Common Python junk
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# PyTorch / model artifacts
+*.pt
+*.pth
+
+# Environment files
+.env
+
+PalPlant/efficient_net
