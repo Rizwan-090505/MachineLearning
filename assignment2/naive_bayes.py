@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import os
@@ -47,10 +48,9 @@ class GaussianNaiveBayes:
 
     def predict_log_proba(self, X):
         X = np.array(X, dtype=float)
-        log_probs = np.column_stack([
-            self.log_priors_[c] + self._log_likelihood(X, c)
-            for c in self.classes_
-        ])
+        log_probs = np.column_stack(
+            [self.log_priors_[c] + self._log_likelihood(X, c) for c in self.classes_]
+        )
         return log_probs
 
     def predict_proba(self, X):
@@ -66,7 +66,9 @@ class GaussianNaiveBayes:
 
 def run_basic_nb():
     X_df, y = make_low_noise_dataset()
-    X_tr, X_te, y_tr, y_te = train_test_split(X_df.values, y.values, test_size=0.2, random_state=SEED)
+    X_tr, X_te, y_tr, y_te = train_test_split(
+        X_df.values, y.values, test_size=0.2, random_state=SEED
+    )
     gnb = GaussianNaiveBayes()
     gnb.fit(X_tr, y_tr)
     preds = gnb.predict(X_te)
@@ -77,7 +79,9 @@ def run_basic_nb():
 
 def run_correlated_features_experiment():
     X_df, y = make_correlated_features_dataset()
-    X_tr, X_te, y_tr, y_te = train_test_split(X_df.values, y.values, test_size=0.2, random_state=SEED)
+    X_tr, X_te, y_tr, y_te = train_test_split(
+        X_df.values, y.values, test_size=0.2, random_state=SEED
+    )
     gnb = GaussianNaiveBayes()
     gnb.fit(X_tr, y_tr)
     preds = gnb.predict(X_te)
@@ -86,10 +90,12 @@ def run_correlated_features_experiment():
     print(f"[NB] Correlated features accuracy: {acc:.4f}")
 
     max_conf = proba.max(axis=1)
-    errors = (preds != y_te)
+    errors = preds != y_te
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-    axes[0].hist(max_conf[~errors], bins=30, alpha=0.7, label="Correct", color="steelblue")
+    axes[0].hist(
+        max_conf[~errors], bins=30, alpha=0.7, label="Correct", color="steelblue"
+    )
     axes[0].hist(max_conf[errors], bins=30, alpha=0.7, label="Wrong", color="tomato")
     axes[0].set_title("Confidence Distribution: Correlated Features")
     axes[0].set_xlabel("Max Predicted Probability")
@@ -120,14 +126,18 @@ def run_correlated_features_experiment():
 
 def run_nb_counterexamples():
     X_w, y_w = make_nb_works_despite_violation()
-    X_wtr, X_wte, y_wtr, y_wte = train_test_split(X_w.values, y_w.values, test_size=0.2, random_state=SEED)
+    X_wtr, X_wte, y_wtr, y_wte = train_test_split(
+        X_w.values, y_w.values, test_size=0.2, random_state=SEED
+    )
     gnb_w = GaussianNaiveBayes()
     gnb_w.fit(X_wtr, y_wtr)
     acc_works = accuracy_score(y_wte, gnb_w.predict(X_wte))
     print(f"[NB] Works despite violation accuracy: {acc_works:.4f}")
 
     X_f, y_f = make_nb_fails_dataset()
-    X_ftr, X_fte, y_ftr, y_fte = train_test_split(X_f.values, y_f.values, test_size=0.2, random_state=SEED)
+    X_ftr, X_fte, y_ftr, y_fte = train_test_split(
+        X_f.values, y_f.values, test_size=0.2, random_state=SEED
+    )
     gnb_f = GaussianNaiveBayes()
     gnb_f.fit(X_ftr, y_ftr)
     acc_fails = accuracy_score(y_fte, gnb_f.predict(X_fte))
@@ -161,13 +171,20 @@ def run_nb_dataset_comparison():
         ("Correlated", make_correlated_features_dataset),
     ]:
         X_df, y = loader()
-        X_tr, X_te, y_tr, y_te = train_test_split(X_df.values, y.values, test_size=0.2, random_state=SEED)
+        X_tr, X_te, y_tr, y_te = train_test_split(
+            X_df.values, y.values, test_size=0.2, random_state=SEED
+        )
         gnb = GaussianNaiveBayes()
         gnb.fit(X_tr, y_tr)
         results[name] = accuracy_score(y_te, gnb.predict(X_te))
 
     fig, ax = plt.subplots(figsize=(7, 4))
-    ax.bar(results.keys(), results.values(), color=["steelblue", "tomato", "goldenrod"], edgecolor="black")
+    ax.bar(
+        results.keys(),
+        results.values(),
+        color=["steelblue", "tomato", "goldenrod"],
+        edgecolor="black",
+    )
     ax.set_ylim(0, 1)
     ax.set_ylabel("Accuracy")
     ax.set_title("Naive Bayes Accuracy Across Datasets")

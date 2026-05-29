@@ -1,0 +1,13 @@
+[project]
+name = "assignment3"
+version = "0.1.0"
+description = "Ensemble Methods Assignment - Bagging, Random Forest, AdaBoost"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.21.0",
+    "pandas>=1.3.0",
+    "scikit-learn>=1.0.0",
+    "matplotlib>=3.5.0",
+    "pillow>=9.0.0",
+]
